@@ -1,0 +1,22 @@
+language: java
+
+jdk:
+  - openjdk11
+
+sudo: false
+
+env:
+  global:
+    - CODECOV_TOKEN="0a764f0a-40c8-44ca-a53e-e5331c1cc4bf"
+
+# после выполнения сборки запустить скрипт, который будет собирать статистику по JaCoCo
+# Здесь используется сторонний сервис https://codecov.io/
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+
+notifications:
+  email:
+    recipients:
+      - sereginsun@yandex.ru
+    on_success: never # default: change
+    on_failure: always # default: always
