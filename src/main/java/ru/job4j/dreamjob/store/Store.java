@@ -59,4 +59,8 @@ public class Store {
         }
         candidates.put(candidate.getId(), candidate);
     }
+
+    public void remove(int id) {
+        candidates.remove(id);
+    }
 }

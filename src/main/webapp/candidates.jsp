@@ -31,6 +31,8 @@
                     <thead>
                     <tr>
                         <th scope="col">Названия</th>
+                        <th scope="col">Фото</th>
+                        <th scope="col"></th>
                     </tr>
                     </thead>
                     <c:forEach items="${candidates}" var="candidate">
@@ -40,6 +42,18 @@
                                 <i class="fa fa-edit mr-3"></i>
                             </a>
                             <c:out value="${candidate.name}"/>
+                        </td>
+                        <td>
+                            <img src="<c:url value='/download?userId=${candidate.id}'/>" width="100px" height="100px"/>
+                        <br>
+                            <a href="<c:url value='/upload?userId=${candidate.id}'/>">
+                                <i class="fa fa-camera"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="<c:url value='/delete?userId=${candidate.id}'/>">
+                                <i class="fa fa-trash"></i>
+                            </a>
                         </td>
                     </tr>
                     </c:forEach>
