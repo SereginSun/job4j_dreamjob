@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.job4j.dreamjob.models.Candidate;
 import ru.job4j.dreamjob.models.Post;
+import ru.job4j.dreamjob.models.User;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -156,6 +157,47 @@ public class PsqlStore implements Store {
     }
 
     @Override
+    public void save(User user) {
+        if (user.getId() == 0) {
+            create(user);
+        } else {
+            update(user);
+        }
+    }
+
+    private User create(User user) {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement("INSERT INTO users(name, email, password) VALUES (?, ?, ?)",
+                     PreparedStatement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getEmail());
+            ps.setString(3, user.getPassword());
+            ps.execute();
+            try (ResultSet id = ps.getGeneratedKeys()) {
+                if (id.next()) {
+                    user.setId(id.getInt(1));
+                }
+            }
+        } catch (Exception e) {
+            LOG.error("Database query failed", e);
+        }
+        return user;
+    }
+
+    private void update(User user) {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement("UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?")) {
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getEmail());
+            ps.setString(3, user.getPassword());
+            ps.setInt(4, user.getId());
+            ps.executeUpdate();
+        } catch (Exception e) {
+            LOG.error("Database query failed", e);
+        }
+    }
+
+    @Override
     public Post findPostById(int id) {
         Post post = null;
         try (Connection cn = pool.getConnection();
@@ -187,6 +229,25 @@ public class PsqlStore implements Store {
             LOG.error("Database query failed", e);
         }
         return candidate;
+    }
+
+    @Override
+    public User findUserByEmail(String email) {
+        User user = null;
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement("SELECT * FROM users WHERE email = ?")) {
+            ps.setString(1, email);
+            ResultSet result = ps.executeQuery();
+            if (result.next()) {
+                user.setId(result.getInt(1));
+                user.setName(result.getString(2));
+                user.setEmail(email);
+                user.setPassword(result.getString(4));
+            }
+        } catch (Exception e) {
+            LOG.error("Database query failed", e);
+        }
+        return user;
     }
 
     @Override
