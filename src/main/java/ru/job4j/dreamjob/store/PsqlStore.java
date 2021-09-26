@@ -239,6 +239,7 @@ public class PsqlStore implements Store {
             ps.setString(1, email);
             ResultSet result = ps.executeQuery();
             if (result.next()) {
+                user = new User();
                 user.setId(result.getInt(1));
                 user.setName(result.getString(2));
                 user.setEmail(email);
