@@ -22,12 +22,12 @@ public class MemStore implements Store {
     private final Map<Integer, User> users = new ConcurrentHashMap<>();
 
     private MemStore() {
-        posts.put(1, new Post(1, "Junior Java Job", "for Junior Java Developer", "23.08.2021"));
-        posts.put(2, new Post(2, "Middle Java Job", "for Middle Java Developer", "24.08.2021"));
-        posts.put(3, new Post(3, "Senior Java Job", "for Senior Java Developer", "22.08.2021"));
-        candidates.put(1, new Candidate(1, "Junior Java"));
-        candidates.put(2, new Candidate(2, "Middle Java"));
-        candidates.put(3, new Candidate(3, "Senior Java"));
+//        posts.put(1, new Post(1, "Junior Java Job", "for Junior Java Developer", "23.08.2021"));
+//        posts.put(2, new Post(2, "Middle Java Job", "for Middle Java Developer", "24.08.2021"));
+//        posts.put(3, new Post(3, "Senior Java Job", "for Senior Java Developer", "22.08.2021"));
+//        candidates.put(1, new Candidate(1, "Junior Java"));
+//        candidates.put(2, new Candidate(2, "Middle Java"));
+//        candidates.put(3, new Candidate(3, "Senior Java"));
     }
 
     public static MemStore instOf() {
