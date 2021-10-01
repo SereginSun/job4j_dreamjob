@@ -6,7 +6,6 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import ru.job4j.dreamjob.models.Candidate;
-import ru.job4j.dreamjob.models.Post;
 import ru.job4j.dreamjob.store.MemStore;
 import ru.job4j.dreamjob.store.PsqlStore;
 import ru.job4j.dreamjob.store.Store;
