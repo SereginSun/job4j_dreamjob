@@ -27,7 +27,7 @@
             data: JSON.stringify({name: $('#exampleInputEmail1').val()}),
             dataType: 'json'
         }).done(function (data) {
-            $('#emailList li:last').append('<li>${data.name}</li>');
+            $('#emailList li:last').append(`<li>${data.name}</li>`);
         }).fail(function (err) {
             console.log(err);
         });
@@ -39,7 +39,7 @@
             dataType: 'json'
         }).done(function (data) {
             for (var email of data) {
-                $('#emailList li:last').append('<li>${email.name}</li>')
+                $('#emailList li:last').append(`<li>${email.name}</li>`)
             }
         }).fail(function (err) {
             console.log(err);
