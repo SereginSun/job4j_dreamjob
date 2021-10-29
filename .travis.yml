@@ -20,3 +20,12 @@ notifications:
       - sereginsun@yandex.ru
     on_success: never # default: change
     on_failure: always # default: always
+
+# Start PostgreSQL
+services:
+  -memcached
+  -postgresql
+
+# Create a database
+before_script:
+  - psql -c 'create database dreamjob;' -U postgres
