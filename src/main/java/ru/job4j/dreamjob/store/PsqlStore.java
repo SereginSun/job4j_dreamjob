@@ -9,13 +9,13 @@ import ru.job4j.dreamjob.models.User;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
+
+import static java.lang.String.format;
 
 public class PsqlStore implements Store {
     private static final Logger LOG = LoggerFactory.getLogger(PsqlStore.class.getName());
@@ -259,6 +259,17 @@ public class PsqlStore implements Store {
             ps.executeUpdate();
         } catch (Exception e) {
             LOG.error("Database query failed", e);
+        }
+    }
+
+    @Override
+    public void clearTable(String tableName) {
+        String script = format("TRUNCATE %s RESTART IDENTITY", tableName);
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement(script)) {
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            LOG.warn("Failed to clear " + tableName);
         }
     }
 }

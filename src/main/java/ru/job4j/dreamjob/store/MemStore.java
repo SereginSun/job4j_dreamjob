@@ -51,6 +51,7 @@ public class MemStore implements Store {
         return null;
     }
 
+    @Override
     public void save(Post post) {
         if (post.getId() == 0) {
             post.setId(POST_ID.incrementAndGet());
@@ -58,6 +59,7 @@ public class MemStore implements Store {
         posts.put(post.getId(), post);
     }
 
+    @Override
     public void save(Candidate candidate) {
         if (candidate.getId() == 0) {
             candidate.setId(CANDIDATE_ID.incrementAndGet());
@@ -72,8 +74,23 @@ public class MemStore implements Store {
         }
         users.put(user.getId(), user);
     }
-
+    @Override
     public void removeCandidate(int id) {
         candidates.remove(id);
+    }
+
+    @Override
+    public void clearTable(String tableName) {
+        switch (tableName) {
+            case "post":
+                posts.clear();
+                break;
+            case "candidate":
+                candidates.clear();
+                break;
+            case "users":
+                users.clear();
+                break;
+        }
     }
 }

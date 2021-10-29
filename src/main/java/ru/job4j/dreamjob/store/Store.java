@@ -24,4 +24,6 @@ public interface Store {
     User findUserByEmail(String email);
 
     void removeCandidate(int id);
+
+    void clearTable(String tableName);
 }
