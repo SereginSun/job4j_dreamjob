@@ -21,7 +21,7 @@
     <profile>
       <id>test</id>
       <properties>
-        <db.url>jdbc:h2:${basedir}:testdb;MODE=PostgreSQL;CASE_INSENSITIVE_IDENTIFIERS=TRUE;</db.url>
+        <db.url>jdbc:h2:${basedir}./testdb;MODE=PostgreSQL;CASE_INSENSITIVE_IDENTIFIERS=TRUE;</db.url>
         <db.username/>
         <db.password/>
         <db.driver>org.h2.Driver</db.driver>
@@ -67,7 +67,7 @@
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <version>42.2.9</version>
+      <version>42.2.16</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
