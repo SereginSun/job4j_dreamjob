@@ -9,6 +9,7 @@ import ru.job4j.dreamjob.models.User;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,7 +24,12 @@ public class PsqlStore implements Store {
 
     private PsqlStore() {
         Properties cfg = new Properties();
-        try (BufferedReader io = new BufferedReader(new FileReader("db.properties"))) {
+        try (BufferedReader io = new BufferedReader(
+                new InputStreamReader(
+                        PsqlStore.class.getClassLoader()
+                                .getResourceAsStream("db.properties")
+                )
+        )) {
             cfg.load(io);
         } catch (Exception e) {
             throw new IllegalStateException(e);
@@ -264,10 +270,13 @@ public class PsqlStore implements Store {
 
     @Override
     public void clearTable(String tableName) {
-        String script = format("TRUNCATE %s RESTART IDENTITY", tableName);
+        String script1 = format("DELETE FROM %s", tableName);
+        String script2 = format("ALTER TABLE %s ALTER COLUMN id RESTART WITH 1", tableName);
+
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement(script)) {
-            ps.executeUpdate();
+             Statement statement = cn.createStatement()) {
+            statement.executeUpdate(script1);
+            statement.executeUpdate(script2);
         } catch (SQLException e) {
             LOG.warn("Failed to clear " + tableName);
         }
