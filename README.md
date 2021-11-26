@@ -2,7 +2,7 @@
 [![Build Status](https://app.travis-ci.com/SereginSun/job4j_dreamjob.svg?branch=main)](https://app.travis-ci.com/SereginSun/job4j_dreamjob)
 [![codecov](https://codecov.io/gh/SereginSun/job4j_dreamjob/branch/main/graph/badge.svg?token=74Z6Y0EIN1)](https://codecov.io/gh/SereginSun/job4j_dreamjob)
 
-###Описание
+##Описание
 DreamJob - веб-приложение, представляющее собой биржу труда. В нём предоставляется возможность добавления, редактирования и удаления вакансий и кандидатов.
 
 ![](images/img1.jpg)
@@ -19,7 +19,7 @@ DreamJob - веб-приложение, представляющее собой 
 
 ![](images/img10.jpg)
 
-###Используемые технологии:
+##Используемые технологии:
  - Java EE Servlet API
  - Apache Tomcat
  - JDBC
