@@ -1,10 +1,14 @@
 package ru.job4j.dreamjob.store;
 
 import ru.job4j.dreamjob.models.Candidate;
+import ru.job4j.dreamjob.models.City;
 import ru.job4j.dreamjob.models.Post;
 import ru.job4j.dreamjob.models.User;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -20,6 +24,8 @@ public class MemStore implements Store {
     private final Map<Integer, Candidate> candidates = new ConcurrentHashMap<>();
 
     private final Map<Integer, User> users = new ConcurrentHashMap<>();
+
+    private final Map<Integer, City> cities = new ConcurrentHashMap<>();
 
     public static MemStore instOf() {
         return INST;
@@ -77,6 +83,40 @@ public class MemStore implements Store {
     @Override
     public void removeCandidate(int id) {
         candidates.remove(id);
+    }
+
+    @Override
+    public void removePost(int id) {
+        posts.remove(id);
+    }
+
+    @Override
+    public Collection<City> findAllCities() {
+        return cities.values();
+    }
+
+    @Override
+    public Collection<Post> findLastDayPosts() {
+        List<Post> lastDayPosts = new ArrayList<>();
+        LocalDateTime lastDay = LocalDateTime.now().minusDays(1);
+        for (Post post : posts.values()) {
+            if (post.getCreated().isAfter(lastDay)) {
+                lastDayPosts.add(post);
+            }
+        }
+        return lastDayPosts;
+    }
+
+    @Override
+    public Collection<Candidate> findLastDayCandidates() {
+        List<Candidate> lastDayCandidates = new ArrayList<>();
+        LocalDateTime lastDay = LocalDateTime.now().minusDays(1);
+        for (Candidate candidate : candidates.values()) {
+            if (candidate.getCreated().isAfter(lastDay)) {
+                lastDayCandidates.add(candidate);
+            }
+        }
+        return lastDayCandidates;
     }
 
     @Override

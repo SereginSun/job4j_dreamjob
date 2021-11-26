@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 
 <!doctype html>
 <html lang="en">
@@ -22,32 +23,7 @@
 </head>
 <body>
 <div class="container pt-3">
-
-    <div class="row">
-        <ul class="nav">
-            <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/posts.do">Вакансии</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/candidates.do">Кандидаты</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/post/edit.jsp">Добавить вакансию</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/candidate/edit.jsp">Добавить кандидата</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/login.jsp"><c:out value="${user.name}"/></a>
-            </li>
-            <c:if test="${user != null}">
-                <li class="nav-item">
-                    <a class="nav-link" href="<%=request.getContextPath()%>/logout.do">Выйти</a>
-                </li>
-            </c:if>
-        </ul>
-    </div>
-
+    <jsp:include page="header.jsp" />
     <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header">Кандидаты</div>
@@ -55,9 +31,11 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th scope="col">Названия</th>
+                        <th scope="col">Имя</th>
                         <th scope="col">Фото</th>
-                        <th scope="col"></th>
+                        <th scope="col">Город</th>
+                        <th scope="col">Дата создания</th>
+                        <th scope="col">Удалить</th>
                     </tr>
                     </thead>
                     <c:forEach items="${candidates}" var="candidate">
@@ -69,15 +47,26 @@
                             <c:out value="${candidate.name}"/>
                         </td>
                         <td>
-                            <img src="<c:url value='/download?userId=${candidate.id}'/>" width="100px" height="100px"/>
+                            <img src="<c:url value='/download?canId=${candidate.id}'/>" width="100px" height="100px"/>
                         <br>
-                            <a href="<c:url value='/upload?userId=${candidate.id}'/>">
+                            <a href="<c:url value='/upload?canId=${candidate.id}'/>">
                                 <i class="fa fa-camera"></i>
                             </a>
                         </td>
                         <td>
-                            <a href="<c:url value='/delete?userId=${candidate.id}'/>">
-                                <i class="fa fa-trash"></i>
+                            <c:forEach items="${cities}" var="city">
+                                <c:if test="${city.id == candidate.cityId}">
+                                    <c:out value="${city.name}"/>
+                                </c:if>
+                            </c:forEach>
+                        </td>
+                        <td>
+                            <fmt:parseDate value="${candidate.created}" pattern="yyyy-MM-dd'T'HH:mm" var="parseCreated"/>
+                            <fmt:formatDate value="${parseCreated}" pattern="dd.MM.yyyy HH:mm"/>
+                        </td>
+                        <td>
+                            <a href="<c:url value='/delete?canId=${candidate.id}'/>">
+                                <button type="submit" class="btn btn-primary">Удалить кандидата</button>
                             </a>
                         </td>
                     </tr>

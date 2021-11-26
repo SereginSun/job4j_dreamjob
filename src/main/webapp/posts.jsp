@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 
 <!doctype html>
 <html lang="en">
@@ -22,32 +23,7 @@
 </head>
 <body>
 <div class="container pt-3">
-
-    <div class="row">
-        <ul class="nav">
-            <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/posts.do">Вакансии</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/candidates.do">Кандидаты</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/post/edit.jsp">Добавить вакансию</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/candidate/edit.jsp">Добавить кандидата</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/login.jsp"><c:out value="${user.name}"/></a>
-            </li>
-            <c:if test="${user != null}">
-                <li class="nav-item">
-                    <a class="nav-link" href="<%=request.getContextPath()%>/logout.do">Выйти</a>
-                </li>
-            </c:if>
-        </ul>
-    </div>
-
+    <jsp:include page="header.jsp" />
     <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header">
@@ -58,6 +34,9 @@
                     <thead>
                     <tr>
                         <th scope="col">Названия</th>
+                        <th scope="col">Описание</th>
+                        <th scope="col">Дата создания</th>
+                        <th scope="col">Удалить</th>
                     </tr>
                     </thead>
                     <c:forEach items="${posts}" var="post">
@@ -67,6 +46,18 @@
                                 <i class="fa fa-edit mr-3"></i>
                             </a>
                             <c:out value="${post.name}"/>
+                        </td>
+                        <td>
+                            <c:out value="${post.description}"/>
+                        </td>
+                        <td>
+                            <fmt:parseDate value="${post.created}" pattern="yyyy-MM-dd'T'HH:mm" var="parseCreated"/>
+                            <fmt:formatDate value="${parseCreated}" pattern="dd.MM.yyyy HH:mm"/>
+                        </td>
+                        <td>
+                            <a href="<c:url value='/deletePost?id=${post.id}'/>">
+                                <button type="submit" class="btn btn-primary">Удалить вакансию</button>
+                            </a>
                         </td>
                     </tr>
                     </c:forEach>

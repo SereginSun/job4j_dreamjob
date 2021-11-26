@@ -6,6 +6,7 @@ import ru.job4j.dreamjob.models.Candidate;
 import ru.job4j.dreamjob.models.Post;
 import ru.job4j.dreamjob.models.User;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class PsqlStoreTest {
     @Test
     public void whenCreatePost() {
         Store store = PsqlStore.instOf();
-        Post firstPost = new Post(0, "Junior Java Job");
+        Post firstPost = new Post(0, "Junior Java Job", "Java core", LocalDateTime.now());
         store.save(firstPost);
         Post postInPsql = store.findPostById(firstPost.getId());
         assertThat(postInPsql.getName(), is(firstPost.getName()));
@@ -34,7 +35,7 @@ public class PsqlStoreTest {
     @Test
     public void whenCreateCandidate() {
         Store store = PsqlStore.instOf();
-        Candidate candidate = new Candidate(0, "Developer");
+        Candidate candidate = new Candidate(0, "Ivan", 0, LocalDateTime.now());
         store.save(candidate);
         Candidate candidateInPsql = store.findCandidateById(candidate.getId());
         assertThat(candidateInPsql.getName(), is(candidate.getName()));
@@ -43,7 +44,7 @@ public class PsqlStoreTest {
     @Test
     public void whenUpdatePost() {
         Store store = PsqlStore.instOf();
-        Post post = new Post(0, "Junior Java Job");
+        Post post = new Post(0, "Junior Java Job", "Java core", LocalDateTime.now());
         store.save(post);
         post.setName("Middle Java Job");
         store.save(post);
@@ -54,7 +55,7 @@ public class PsqlStoreTest {
     @Test
     public void whenUpdateCandidate() {
         Store store = PsqlStore.instOf();
-        Candidate candidate = new Candidate(0, "Developer");
+        Candidate candidate = new Candidate(0, "Developer", 0, LocalDateTime.now());
         store.save(candidate);
         candidate.setName("Java Developer");
         store.save(candidate);
@@ -93,8 +94,8 @@ public class PsqlStoreTest {
     @Test
     public void whenRemoveCandidate() {
         Store store = PsqlStore.instOf();
-        Candidate firstCandidate = new Candidate(0, "Developer");
-        Candidate secondCandidate = new Candidate(0, "Programmer");
+        Candidate firstCandidate = new Candidate(0, "Developer", 0, LocalDateTime.now());
+        Candidate secondCandidate = new Candidate(0, "Programmer", 0, LocalDateTime.now());
         store.save(firstCandidate);
         store.save(secondCandidate);
         store.removeCandidate(2);

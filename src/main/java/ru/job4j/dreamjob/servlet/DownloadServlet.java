@@ -13,11 +13,11 @@ import java.io.IOException;
 public class DownloadServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String userId = req.getParameter("userId");
+        String candidateId = req.getParameter("canId");
         File downloadFile = null;
         for (File file : new File("c:\\images\\").listFiles()) {
             String fileName = FilenameUtils.getBaseName(file.getName());
-            if (userId.equals(fileName)) {
+            if (candidateId.equals(fileName)) {
                 downloadFile = file;
                 break;
             }

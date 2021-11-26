@@ -22,8 +22,40 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
             crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                type: 'GET',
+                url: 'http://localhost:8080/dreamjob/loadCities',
+                dataType: 'json'
+            }).done(function (data) {
+                for (var city of data) {
+                    $('#cities').append(`<option value="${city.id}">${city.name}</option>`)
+                }
+            }).fail(function (err) {
+                console.log(err);
+            });
+        });
+
+        function validate() {
+            let name = $('#name').val();
+            let city = $('#cities').val();
+            if (name === '') {
+                alert($('#name').attr('title'));
+                return false;
+            }
+            if (city === '0') {
+                alert($('#cities').attr('title'));
+                return false;
+            }
+            return true;
+        }
+    </script>
 
     <title>Работа мечты</title>
+
 </head>
 <body>
 <%
@@ -34,32 +66,7 @@
     }
 %>
 <div class="container pt-3">
-
-    <div class="row">
-        <ul class="nav">
-            <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/posts.do">Вакансии</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/candidates.do">Кандидаты</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/post/edit.jsp">Добавить вакансию</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/candidate/edit.jsp">Добавить кандидата</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/login.jsp"><c:out value="${user.name}"/></a>
-            </li>
-            <c:if test="${user != null}">
-                <li class="nav-item">
-                    <a class="nav-link" href="<%=request.getContextPath()%>/logout.do">Выйти</a>
-                </li>
-            </c:if>
-        </ul>
-    </div>
-
+    <jsp:include page="/header.jsp"/>
     <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header">
@@ -73,9 +80,16 @@
                 <form action="<%=request.getContextPath()%>/candidates.do?id=<%=candidate.getId()%>" method="post">
                     <div class="form-group">
                         <label>Имя</label>
-                        <input type="text" class="form-control" name="name" value="<%=candidate.getName()%>">
+                        <input type="text" class="form-control" name="name" value="<%=candidate.getName()%>"
+                               id="name" title="Введите имя" placeholder="Введите имя и фамилию"/>
                     </div>
-                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <div class="form-group">
+                        <label for="cities">Город</label>
+                        <select class="form-control" id="cities" name="city" title="Выберите город">
+                            <option selected value="0">Выберите город...</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary" onclick="return validate()">Сохранить</button>
                 </form>
             </div>
         </div>

@@ -14,7 +14,7 @@
 
 <div class="container">
     <h2>Upload image</h2>
-    <form action="<c:url value='/upload?userId='/><%=request.getParameter("userId")%>" method="post" enctype="multipart/form-data">
+    <form action="<c:url value='/upload?canId='/><%=request.getParameter("canId")%>" method="post" enctype="multipart/form-data">
         <div class="checkbox">
             <input type="file" name="file">
         </div>

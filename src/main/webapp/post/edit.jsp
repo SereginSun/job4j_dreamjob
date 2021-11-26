@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="ru.job4j.dreamjob.models.Post" %>
 <%@ page import="ru.job4j.dreamjob.store.PsqlStore" %>
+<%@ page import="java.time.LocalDateTime" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
 
 <!doctype html>
@@ -22,44 +23,34 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
             crossorigin="anonymous"></script>
+    <script>
+        function validate() {
+            let name = $('#namePost').val();
+            let description = $('#desc').val();
+            if (name === '') {
+                alert($('#namePost').attr('title'));
+                return false;
+            }
+            if (description === '') {
+                alert($('#desc').attr('title'));
+                return false;
+            }
+            return true;
+        }
+    </script>
 
     <title>Работа мечты</title>
 </head>
 <body>
 <%
     String id = request.getParameter("id");
-    Post post = new Post(0, "");
+    Post post = new Post(0, "", "", LocalDateTime.now());
     if (id != null) {
         post = PsqlStore.instOf().findPostById(Integer.parseInt(id));
     }
 %>
 <div class="container pt-3">
-
-    <div class="row">
-        <ul class="nav">
-            <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/posts.do">Вакансии</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/candidates.do">Кандидаты</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/post/edit.jsp">Добавить вакансию</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/candidate/edit.jsp">Добавить кандидата</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/login.jsp"><c:out value="${user.name}"/></a>
-            </li>
-            <c:if test="${user != null}">
-                <li class="nav-item">
-                    <a class="nav-link" href="<%=request.getContextPath()%>/logout.do">Выйти</a>
-                </li>
-            </c:if>
-        </ul>
-    </div>
-
+    <jsp:include page="/header.jsp" />
     <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header">
@@ -72,10 +63,16 @@
             <div class="card-body">
                 <form action="<%=request.getContextPath()%>/posts.do?id=<%=post.getId()%>" method="post">
                     <div class="form-group">
-                        <label>Имя</label>
-                        <input type="text" class="form-control" name="name" value="<%=post.getName()%>">
+                        <label>Название</label>
+                        <input type="text" class="form-control" id="namePost" name="name" value="<%=post.getName()%>"
+                               title="Введите название" placeholder="Введите название вакансии"/>
                     </div>
-                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <div class="form-group">
+                        <label>Описание</label>
+                        <input type="text" class="form-control" name="description" value="<%=post.getDescription()%>"
+                               id="desc" title="Введите описание" placeholder="Введите описание вакансии"/>
+                    </div>
+                    <button type="submit" class="btn btn-primary" onclick="return validate()">Сохранить</button>
                 </form>
             </div>
         </div>

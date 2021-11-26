@@ -1,6 +1,7 @@
 package ru.job4j.dreamjob.store;
 
 import ru.job4j.dreamjob.models.Candidate;
+import ru.job4j.dreamjob.models.City;
 import ru.job4j.dreamjob.models.Post;
 import ru.job4j.dreamjob.models.User;
 
@@ -24,6 +25,14 @@ public interface Store {
     User findUserByEmail(String email);
 
     void removeCandidate(int id);
+
+    void removePost(int id);
+
+    Collection<City> findAllCities();
+
+    Collection<Post> findLastDayPosts();
+
+    Collection<Candidate> findLastDayCandidates();
 
     void clearTable(String tableName);
 }
